@@ -3,14 +3,22 @@ syntax = "proto3";
 package server;
 option go_package="./movies";
 
-message Request {
-  string ping = 1;
+
+message NavigationModel {
+  int64 id=1;//ID
+  string title=2;//标题
+  repeated NavigationModel subNavList=3;//子级
+}
+message GetNavigationRequest {
+
 }
 
-message Response {
-  string pong = 1;
+message GetNavigationResponse {
+  int64 code=1;
+  string message=2;
+  repeated NavigationModel data=3;
 }
 
 service MoviesServer {
-  rpc Ping(Request) returns(Response);
+  rpc GetNavigation(GetNavigationRequest) returns(GetNavigationResponse);
 }

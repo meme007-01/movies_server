@@ -3,11 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-
-	"movies/rpc/internal/config"
-	"movies/rpc/internal/server"
-	"movies/rpc/internal/svc"
-	"movies/rpc/movies"
+	"movies_server/rpc/internal/config"
+	"movies_server/rpc/internal/server/moviesserver"
+	"movies_server/rpc/internal/svc"
+	"movies_server/rpc/movies"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
@@ -16,7 +15,7 @@ import (
 	"google.golang.org/grpc/reflection"
 )
 
-var configFile = flag.String("f", "etc/server.yaml", "the config file")
+var configFile = flag.String("f", "./etc/server.yaml", "the config file")
 
 func main() {
 	flag.Parse()

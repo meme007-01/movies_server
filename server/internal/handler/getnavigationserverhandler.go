@@ -1,24 +1,24 @@
 package handler
 
 import (
+	"movies_server/server/internal/logic"
+	"movies_server/server/internal/svc"
+	"movies_server/server/internal/types"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
-	"movies/server/internal/logic"
-	"movies/server/internal/svc"
-	"movies/server/internal/types"
 )
 
-func ServerHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func GetNavigationServerHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.Request
+		var req types.GetNavigationRequest
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 			return
 		}
 
-		l := logic.NewServerLogic(r.Context(), svcCtx)
-		resp, err := l.Server(&req)
+		l := logic.NewGetNavigationServerLogic(r.Context(), svcCtx)
+		resp, err := l.GetNavigationServer(&req)
 		if err != nil {
 			httpx.ErrorCtx(r.Context(), w, err)
 		} else {

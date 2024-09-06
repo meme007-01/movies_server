@@ -7,9 +7,9 @@ package server
 import (
 	"context"
 
-	"movies/rpc/internal/logic"
-	"movies/rpc/internal/svc"
-	"movies/rpc/movies"
+	"movies_server/rpc/internal/logic/moviesserver"
+	"movies_server/rpc/internal/svc"
+	"movies_server/rpc/movies"
 )
 
 type MoviesServerServer struct {
@@ -23,7 +23,7 @@ func NewMoviesServerServer(svcCtx *svc.ServiceContext) *MoviesServerServer {
 	}
 }
 
-func (s *MoviesServerServer) Ping(ctx context.Context, in *movies.Request) (*movies.Response, error) {
-	l := logic.NewPingLogic(ctx, s.svcCtx)
-	return l.Ping(in)
+func (s *MoviesServerServer) GetNavigation(ctx context.Context, in *movies.GetNavigationRequest) (*movies.GetNavigationResponse, error) {
+	l := moviesserverlogic.NewGetNavigationLogic(ctx, s.svcCtx)
+	return l.GetNavigation(in)
 }

@@ -1,0 +1,29 @@
+syntax = "v1"
+
+type NavigationModel {
+	Id         int64             `json:"id" dc:"ID"`
+	Title      string            `json:"title" dc:"标题"`
+	SubNavList []NavigationModel `json:"subNavList" dc:"子菜单"`
+}
+
+// 获取tab导航栏信息
+type GetNavigationRequest {}
+
+type GetNavigationResponse {
+	Code    int64             `json:"code" dc:"code 码"`
+	Message string            `json:"message" dc:"消息"`
+	Data    []NavigationModel `json:"data" dc:"数据"`
+}
+
+//获取分类数据信息 ...
+@server (
+	prefix: /v1 // 对当前 Foo 语法块下的所有路由，新增 /v1 路由前缀，不需要则请删除此行
+// group:       // 对当前 Foo 语法块下的所有路由，路由归并到 g1 目录下，不需要则请删除此行
+// middleware: AuthInterceptor // 对当前 Foo 语法块下的所有路由添加中间件，不需要则请删除此行
+// maxBytes:   1048576 // 对当前 Foo 语法块下的所有路由添加请求体大小控制，单位为 byte,goctl 版本 >= 1.5.0 才支持
+)
+service server-api {
+	@handler GetNavigationServerHandler
+	get /getNavigation (GetNavigationRequest) returns (GetNavigationResponse)
+}
+
