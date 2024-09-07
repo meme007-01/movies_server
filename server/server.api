@@ -3,6 +3,7 @@ syntax = "v1"
 type NavigationModel {
 	Id         int64             `json:"id" dc:"ID"`
 	Title      string            `json:"title" dc:"标题"`
+	Sort       int64             `json:"sort" dc:"排序"`
 	SubNavList []NavigationModel `json:"subNavList" dc:"子菜单"`
 }
 

@@ -38,11 +38,13 @@ func (l *GetNavigationServerLogic) GetNavigationServer(req *types.GetNavigationR
 				newList = append(newList, types.NavigationModel{
 					Title: m.GetTitle(),
 					Id:    m.GetId(),
+					Sort:  m.GetSort(),
 				})
 			}
 			list = append(list, types.NavigationModel{
 				Title:      c.GetTitle(),
 				Id:         c.GetId(),
+				Sort:       c.GetSort(),
 				SubNavList: newList,
 			})
 		}

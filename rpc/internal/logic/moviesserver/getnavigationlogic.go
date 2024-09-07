@@ -42,12 +42,14 @@ func (l *GetNavigationLogic) GetNavigation(in *movies.GetNavigationRequest) (*mo
 						subLIst = append(subLIst, &moviesserver.NavigationModel{
 							Title: c.Name,
 							Id:    c.Id,
+							Sort:  c.Sort,
 						})
 					}
 				}
 				nav := &moviesserver.NavigationModel{
 					Id:         category.Id,
 					Title:      category.Name,
+					Sort:       category.Sort,
 					SubNavList: subLIst,
 				}
 				newList = append(newList, nav)

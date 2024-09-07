@@ -7,7 +7,8 @@ option go_package="./movies";
 message NavigationModel {
   int64 id=1;//ID
   string title=2;//标题
-  repeated NavigationModel subNavList=3;//子级
+  int64 sort=3;//排序
+  repeated NavigationModel subNavList=4;//子级
 }
 message GetNavigationRequest {
 

@@ -120,7 +120,7 @@ func (m *defaultCategoryModel) tableName() string {
 }
 
 func (m *defaultCategoryModel) FindList(ctx context.Context) ([]Category, error) {
-	query := fmt.Sprintf("select * from %s", m.table)
+	query := fmt.Sprintf("select * from %s where status=1", m.table)
 	var resp []Category
 	err := m.QueryRowsNoCacheCtx(ctx, &resp, query)
 	//err := m.QueryRowCtx(ctx, &resp, cmsCategoryIdKey, func(ctx context.Context, conn sqlx.SqlConn, v any) error {
