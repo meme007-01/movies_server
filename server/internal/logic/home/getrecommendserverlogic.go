@@ -33,7 +33,7 @@ func (l *GetRecommendServerLogic) GetRecommendServer(req *types.GetRecommendRequ
 		BannerList: make([]*types.MovieModel, 0),
 		List:       nil,
 		Type:       0,
-		Name:       "",
+		Name:       "幻灯片",
 	}
 
 	dataMap := map[int64]*types.RecommendList{}
@@ -101,6 +101,10 @@ func (l *GetRecommendServerLogic) GetRecommendServer(req *types.GetRecommendRequ
 			bannerRecommend.BannerList = append(bannerRecommend.BannerList, movieModel)
 		} else {
 			typeId := m.GetCategoryPid()
+			_, strOk := typeMap[typeId]
+			if !strOk {
+				continue
+			}
 			_, ok := dataMap[typeId]
 			if !ok {
 				dataMap[typeId] = &types.RecommendList{
@@ -119,8 +123,8 @@ func (l *GetRecommendServerLogic) GetRecommendServer(req *types.GetRecommendRequ
 		recommendList = append(recommendList, list)
 	}
 	return &types.GetRecommendResponse{
-		Code:    0,
-		Message: "111111",
+		Code:    200,
+		Message: "成功",
 		Data:    recommendList,
 	}, nil
 }
