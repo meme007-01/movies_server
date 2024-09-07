@@ -15,10 +15,15 @@ import (
 type (
 	GetNavigationRequest  = movies.GetNavigationRequest
 	GetNavigationResponse = movies.GetNavigationResponse
+	GetRecommendRequest   = movies.GetRecommendRequest
+	GetRecommendResponse  = movies.GetRecommendResponse
+	MovieModel            = movies.MovieModel
 	NavigationModel       = movies.NavigationModel
+	RecommendList         = movies.RecommendList
 
 	MoviesServer interface {
 		GetNavigation(ctx context.Context, in *GetNavigationRequest, opts ...grpc.CallOption) (*GetNavigationResponse, error)
+		GetRecommend(ctx context.Context, in *GetRecommendRequest, opts ...grpc.CallOption) (*GetRecommendResponse, error)
 	}
 
 	defaultMoviesServer struct {
@@ -35,4 +40,9 @@ func NewMoviesServer(cli zrpc.Client) MoviesServer {
 func (m *defaultMoviesServer) GetNavigation(ctx context.Context, in *GetNavigationRequest, opts ...grpc.CallOption) (*GetNavigationResponse, error) {
 	client := movies.NewMoviesServerClient(m.cli.Conn())
 	return client.GetNavigation(ctx, in, opts...)
+}
+
+func (m *defaultMoviesServer) GetRecommend(ctx context.Context, in *GetRecommendRequest, opts ...grpc.CallOption) (*GetRecommendResponse, error) {
+	client := movies.NewMoviesServerClient(m.cli.Conn())
+	return client.GetRecommend(ctx, in, opts...)
 }

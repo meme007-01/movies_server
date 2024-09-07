@@ -25,7 +25,7 @@ func NewGetNavigationLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Get
 
 func (l *GetNavigationLogic) GetNavigation(in *movies.GetNavigationRequest) (*movies.GetNavigationResponse, error) {
 	// todo: add your logic here and delete this line
-	list, err := l.svcCtx.CategoryModel.FindList(l.ctx)
+	list, err := l.svcCtx.ExCategoryModel.FindList(l.ctx)
 	logx.Infov(list)
 	res := &movies.GetNavigationResponse{
 		Code:    200,

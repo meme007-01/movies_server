@@ -27,3 +27,8 @@ func (s *MoviesServerServer) GetNavigation(ctx context.Context, in *movies.GetNa
 	l := moviesserverlogic.NewGetNavigationLogic(ctx, s.svcCtx)
 	return l.GetNavigation(in)
 }
+
+func (s *MoviesServerServer) GetRecommend(ctx context.Context, in *movies.GetRecommendRequest) (*movies.GetRecommendResponse, error) {
+	l := moviesserverlogic.NewGetRecommendLogic(ctx, s.svcCtx)
+	return l.GetRecommend(in)
+}

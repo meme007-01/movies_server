@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion8
 
 const (
 	MoviesServer_GetNavigation_FullMethodName = "/server.MoviesServer/GetNavigation"
+	MoviesServer_GetRecommend_FullMethodName  = "/server.MoviesServer/GetRecommend"
 )
 
 // MoviesServerClient is the client API for MoviesServer service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MoviesServerClient interface {
 	GetNavigation(ctx context.Context, in *GetNavigationRequest, opts ...grpc.CallOption) (*GetNavigationResponse, error)
+	GetRecommend(ctx context.Context, in *GetRecommendRequest, opts ...grpc.CallOption) (*GetRecommendResponse, error)
 }
 
 type moviesServerClient struct {
@@ -47,11 +49,22 @@ func (c *moviesServerClient) GetNavigation(ctx context.Context, in *GetNavigatio
 	return out, nil
 }
 
+func (c *moviesServerClient) GetRecommend(ctx context.Context, in *GetRecommendRequest, opts ...grpc.CallOption) (*GetRecommendResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetRecommendResponse)
+	err := c.cc.Invoke(ctx, MoviesServer_GetRecommend_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MoviesServerServer is the server API for MoviesServer service.
 // All implementations must embed UnimplementedMoviesServerServer
 // for forward compatibility
 type MoviesServerServer interface {
 	GetNavigation(context.Context, *GetNavigationRequest) (*GetNavigationResponse, error)
+	GetRecommend(context.Context, *GetRecommendRequest) (*GetRecommendResponse, error)
 	mustEmbedUnimplementedMoviesServerServer()
 }
 
@@ -61,6 +74,9 @@ type UnimplementedMoviesServerServer struct {
 
 func (UnimplementedMoviesServerServer) GetNavigation(context.Context, *GetNavigationRequest) (*GetNavigationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNavigation not implemented")
+}
+func (UnimplementedMoviesServerServer) GetRecommend(context.Context, *GetRecommendRequest) (*GetRecommendResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetRecommend not implemented")
 }
 func (UnimplementedMoviesServerServer) mustEmbedUnimplementedMoviesServerServer() {}
 
@@ -93,6 +109,24 @@ func _MoviesServer_GetNavigation_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MoviesServer_GetRecommend_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetRecommendRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MoviesServerServer).GetRecommend(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MoviesServer_GetRecommend_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MoviesServerServer).GetRecommend(ctx, req.(*GetRecommendRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MoviesServer_ServiceDesc is the grpc.ServiceDesc for MoviesServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -103,6 +137,10 @@ var MoviesServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetNavigation",
 			Handler:    _MoviesServer_GetNavigation_Handler,
+		},
+		{
+			MethodName: "GetRecommend",
+			Handler:    _MoviesServer_GetRecommend_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

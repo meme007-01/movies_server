@@ -1,25 +1,105 @@
 syntax = "proto3";
 
 package server;
-option go_package="./movies";
+option  go_package = "./movies";
 
-
-message NavigationModel {
-  int64 id=1;//ID
-  string title=2;//标题
-  int64 sort=3;//排序
-  repeated NavigationModel subNavList=4;//子级
+message NavigationModel
+{
+    int64                    id         = 1; //ID
+    string                   title      = 2; //标题
+    int64                    sort       = 3; //排序
+    repeated NavigationModel subNavList = 4; //子级
 }
-message GetNavigationRequest {
-
+message GetNavigationRequest
+{
+}
+message GetNavigationResponse
+{
+    int64                    code    = 1;
+    string                   message = 2;
+    repeated NavigationModel data    = 3;
 }
 
-message GetNavigationResponse {
-  int64 code=1;
-  string message=2;
-  repeated NavigationModel data=3;
+message MovieModel
+{
+    int64  id                    = 1;  //                      `json:"id"`
+    string title                 = 2;  //                  `json:"title"` // 影片标题
+    int64  categoryPid           = 3;  //             `json:"categoryPid"` // 分类一级id
+    int64  categoryChildId       = 4;  //        `json:"categoryChildId"` // 分类二级id
+    string surfacePlot           = 5;  //           `json:"surfacePlot"` // 影片封面图
+    int64  recommend             = 6;  //          `json:"recommend"` // 是否推荐 1是 2否
+    int64  cycle                 = 7;  //                   `json:"cycle"` // 是否轮播 1是 2否
+    string cycleImg              = 8;  //              `json:"cycleImg"` // 轮播图片
+    int64  chargingMode          = 9;  //           `json:"chargingMode"` // 收费模式 1免费 2vip免费 3金币点播
+    int64  buyMode               = 10; //                `json:"buyMode"` // 购买模式 1按部 2按集
+    int64  gold                  = 11; //             int64  `json:"gold"` // 金币点播值
+    string directors             = 12; //           `json:"directors"` // 导演
+    string actors                = 13; //        `json:"actors"` // 演员
+    int64  imdbScore             = 14; //            `json:"imdbScore"` // imd评分.百分制
+    string imdbScoreId           = 15; //          `json:"imdbScoreId"` // imd评分ID
+    int64  doubanScore           = 16; //          `json:"doubanScore"` // 豆瓣评分.百分制
+    string doubanScoreId         = 17; //          `json:"doubanScoreId"` // 豆瓣评分ID
+    string introduce             = 18; //              `json:"introduce"` // 简介
+    int64  popularityDay         = 19; //          `json:"popularityDay"` // 日人气
+    int64  popularityWeek        = 20; //          `json:"popularityWeek"` // 周人气
+    int64  popularityMonth       = 21; //         `json:"popularityMonth"` // 月人气
+    int64  popularitySum         = 22; //        `json:"popularitySum"` // 总人气
+    string note                  = 23; //                  `json:"note"` // 连载状态
+    string year                  = 24; //                  `json:"year"` // 年份
+    int64  albumId               = 25; //                `json:"albumId"` // 关联专题id
+    int64  status                = 26; //              `json:"status"` // 状态
+    int64  createAt              = 27; //             `json:"create_at"`
+    int64  updateAt              = 28; //               `json:"update_at"`
+    int64  duration              = 29; //             `json:"duration"` // 时长(单位s)
+    string region                = 30; //               `json:"region"` // 自定义地区
+    string language              = 31; //          `json:"language"` // 自定义语言
+    string label                 = 32; //         `json:"label"` // 自定义标签
+    int64  number                = 33; //         `json:"number"` // 总集数
+    int64  total                 = 34; //         `json:"total"` // 更新集数
+    string horizontalPoster      = 35; //     `json:"horizontalPoster"` // 横屏海报
+    string verticalPoster        = 36; //         `json:"verticalPoster"` // 竖屏海报
+    string publish               = 37; //              `json:"publish"` // 发行商
+    string serialNumber          = 38; //           `json:"serialNumber"` // 序列号
+    string screenshot            = 39; //          `json:"screenshot"` // 截屏
+    string gif                   = 40; //              `json:"gif"`
+    string alias                 = 41; //              `json:"alias"`
+    int64  releaseAt             = 42; //           `json:"releaseAt"`
+    int64  shelfAt               = 43; //              `json:"shelfAt"`
+    int64  end                   = 44; //                  `json:"end"`
+    string unit                  = 45; //                  `json:"unit"`
+    int64  watch                 = 46; //               `json:"watch"`
+    int64  collectionId          = 47; //           `json:"collection_id"`
+    int64  useLocalImage         = 48; //         `json:"useLocalImage"`
+    int64  titlesTime            = 49; //            `json:"titles_time"` // 片头时间
+    int64  trailerTime           = 50; //             `json:"trailerTime"` // 片尾时间
+    int64  siteId                = 51; //              `json:"siteId"` // 站点id
+    int64  categoryPidStatus     = 52; //      `json:"categoryPidStatus"` // 顶级分类状态
+    int64  categoryChildIdStatus = 53; //   `json:"categoryChildIdStatus"` // 子级分类状态
+    string playUrl               = 54; //               `json:"playUrl"` // 采集的源地址
+    int64  playUrlPutIn          = 55; //           `json:"playUrlPutIn"` // 播放地址是否入库1-已经入库
 }
 
-service MoviesServer {
-  rpc GetNavigation(GetNavigationRequest) returns(GetNavigationResponse);
+message RecommendList
+{
+    repeated MovieModel bannerList = 1; // `json:"bannerList" dc:"banner数据"`
+    repeated MovieModel list       = 2; //      []MovieModel `json:"list" dc:"数据"`
+    int64               type       = 3; //              `json:"type" dc:"推荐页面0, 其他页面按分类id"`
+    string              name       = 4; //             `json:"name" dc:"分类名称,服务器直接定义"`
+}
+
+// 获取推荐页面信息
+message GetRecommendRequest
+{
+}
+message GetRecommendResponse
+{
+    int64               code    = 1;
+    string              message = 2; //"消息"`
+    repeated MovieModel data    = 3; //"数据"`
+}
+
+service MoviesServer
+{
+    rpc GetNavigation(GetNavigationRequest) returns (GetNavigationResponse);
+    rpc GetRecommend(GetRecommendRequest) returns (GetRecommendResponse);
 }

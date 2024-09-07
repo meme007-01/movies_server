@@ -6,6 +6,7 @@ package handler
 import (
 	"net/http"
 
+	home "movies_server/server/internal/handler/home"
 	"movies_server/server/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -17,7 +18,12 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			{
 				Method:  http.MethodGet,
 				Path:    "/getNavigation",
-				Handler: GetNavigationServerHandler(serverCtx),
+				Handler: home.GetNavigationServerHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/getRecommend",
+				Handler: home.GetRecommendServerHandler(serverCtx),
 			},
 		},
 		rest.WithPrefix("/v1"),

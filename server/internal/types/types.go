@@ -12,9 +12,83 @@ type GetNavigationResponse struct {
 	Data    []NavigationModel `json:"data" dc:"数据"`
 }
 
+type GetRecommendRequest struct {
+}
+
+type GetRecommendResponse struct {
+	Code    int64            `json:"code" dc:"code 码"`
+	Message string           `json:"message" dc:"消息"`
+	Data    []*RecommendList `json:"data" dc:"数据"`
+}
+
+type MovieModel struct {
+	Id                    int64  `json:"id"`
+	Title                 string `json:"title"`           // 影片标题
+	CategoryPid           int64  `json:"categoryPid"`     // 分类一级id
+	CategoryChildId       int64  `json:"categoryChildId"` // 分类二级id
+	SurfacePlot           string `json:"surfacePlot"`     // 影片封面图
+	Recommend             int64  `json:"recommend"`       // 是否推荐 1是 2否
+	Cycle                 int64  `json:"cycle"`           // 是否轮播 1是 2否
+	CycleImg              string `json:"cycleImg"`        // 轮播图片
+	ChargingMode          int64  `json:"chargingMode"`    // 收费模式 1免费 2vip免费 3金币点播
+	BuyMode               int64  `json:"buyMode"`         // 购买模式 1按部 2按集
+	Gold                  int64  `json:"gold"`            // 金币点播值
+	Directors             string `json:"directors"`       // 导演
+	Actors                string `json:"actors"`          // 演员
+	ImdbScore             int64  `json:"imdbScore"`       // imd评分.百分制
+	ImdbScoreId           string `json:"imdbScoreId"`     // imd评分ID
+	DoubanScore           int64  `json:"doubanScore"`     // 豆瓣评分.百分制
+	DoubanScoreId         string `json:"doubanScoreId"`   // 豆瓣评分ID
+	Introduce             string `json:"introduce"`       // 简介
+	PopularityDay         int64  `json:"popularityDay"`   // 日人气
+	PopularityWeek        int64  `json:"popularityWeek"`  // 周人气
+	PopularityMonth       int64  `json:"popularityMonth"` // 月人气
+	PopularitySum         int64  `json:"popularitySum"`   // 总人气
+	Note                  string `json:"note"`            // 连载状态
+	Year                  string `json:"year"`            // 年份
+	AlbumId               int64  `json:"albumId"`         // 关联专题id
+	Status                int64  `json:"status"`          // 状态
+	CreateAt              int64  `json:"create_at"`
+	UpdateAt              int64  `json:"update_at"`
+	Duration              int64  `json:"duration"`         // 时长(单位s)
+	Region                string `json:"region"`           // 自定义地区
+	Language              string `json:"language"`         // 自定义语言
+	Label                 string `json:"label"`            // 自定义标签
+	Number                int64  `json:"number"`           // 总集数
+	Total                 int64  `json:"total"`            // 更新集数
+	HorizontalPoster      string `json:"horizontalPoster"` // 横屏海报
+	VerticalPoster        string `json:"verticalPoster"`   // 竖屏海报
+	Publish               string `json:"publish"`          // 发行商
+	SerialNumber          string `json:"serialNumber"`     // 序列号
+	Screenshot            string `json:"screenshot"`       // 截屏
+	Gif                   string `json:"gif"`
+	Alias                 string `json:"alias"`
+	ReleaseAt             int64  `json:"releaseAt"`
+	ShelfAt               int64  `json:"shelfAt"`
+	End                   int64  `json:"end"`
+	Unit                  string `json:"unit"`
+	Watch                 int64  `json:"watch"`
+	CollectionId          int64  `json:"collection_id"`
+	UseLocalImage         int64  `json:"useLocalImage"`
+	TitlesTime            int64  `json:"titles_time"`           // 片头时间
+	TrailerTime           int64  `json:"trailerTime"`           // 片尾时间
+	SiteId                int64  `json:"siteId"`                // 站点id
+	CategoryPidStatus     int64  `json:"categoryPidStatus"`     // 顶级分类状态
+	CategoryChildIdStatus int64  `json:"categoryChildIdStatus"` // 子级分类状态
+	PlayUrl               string `json:"playUrl"`               // 采集的源地址
+	PlayUrlPutIn          int64  `json:"playUrlPutIn"`          // 播放地址是否入库1-已经入库
+}
+
 type NavigationModel struct {
 	Id         int64             `json:"id" dc:"ID"`
 	Title      string            `json:"title" dc:"标题"`
 	Sort       int64             `json:"sort" dc:"排序"`
 	SubNavList []NavigationModel `json:"subNavList" dc:"子菜单"`
+}
+
+type RecommendList struct {
+	BannerList []*MovieModel `json:"bannerList" dc:"banner数据"`
+	List       []*MovieModel `json:"list" dc:"数据"`
+	Type       int64         `json:"type" dc:"推荐页面0, 其他页面按分类id"`
+	Name       string        `json:"name" dc:"分类名称,服务器直接定义"`
 }
