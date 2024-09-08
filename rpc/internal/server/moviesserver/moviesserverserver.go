@@ -6,10 +6,10 @@ package server
 
 import (
 	"context"
+	"movies_server/common/movies"
 
 	"movies_server/rpc/internal/logic/moviesserver"
 	"movies_server/rpc/internal/svc"
-	"movies_server/rpc/movies"
 )
 
 type MoviesServerServer struct {

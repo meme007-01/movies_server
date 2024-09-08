@@ -2,7 +2,7 @@ package svc
 
 import (
 	"github.com/zeromicro/go-zero/zrpc"
-	"movies_server/server/internal/client/moviesserver"
+	"movies_server/common/client/moviesserver"
 	"movies_server/server/internal/config"
 )
 

@@ -6,8 +6,7 @@ package moviesserver
 
 import (
 	"context"
-
-	"movies_server/rpc/movies"
+	"movies_server/common/movies"
 
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"

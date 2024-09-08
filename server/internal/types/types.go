@@ -77,6 +77,8 @@ type MovieModel struct {
 	CategoryChildIdStatus int64  `json:"categoryChildIdStatus"` // 子级分类状态
 	PlayUrl               string `json:"playUrl"`               // 采集的源地址
 	PlayUrlPutIn          int64  `json:"playUrlPutIn"`          // 播放地址是否入库1-已经入库
+	TypeName              string `json:"typeName"`              // 类型名称
+	TypeSort              int64  `json:"typeSort"`              //类型排序
 }
 
 type NavigationModel struct {
@@ -91,4 +93,5 @@ type RecommendList struct {
 	List       []*MovieModel `json:"list" dc:"数据"`
 	Type       int64         `json:"type" dc:"推荐页面0, 其他页面按分类id"`
 	Name       string        `json:"name" dc:"分类名称,服务器直接定义"`
+	Sort       int64         `json:"sort" dc:"分类排序"`
 }

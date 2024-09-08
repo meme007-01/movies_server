@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"movies_server/common/movies"
 	"movies_server/rpc/internal/config"
 	"movies_server/rpc/internal/server/moviesserver"
 	"movies_server/rpc/internal/svc"
-	"movies_server/rpc/movies"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"

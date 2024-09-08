@@ -2,9 +2,9 @@ package moviesserverlogic
 
 import (
 	"context"
+	"movies_server/common/client/moviesserver"
+	"movies_server/common/movies"
 	"movies_server/rpc/internal/svc"
-	"movies_server/rpc/movies"
-	"movies_server/rpc/moviesserver"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -24,9 +24,7 @@ func NewGetNavigationLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Get
 }
 
 func (l *GetNavigationLogic) GetNavigation(in *movies.GetNavigationRequest) (*movies.GetNavigationResponse, error) {
-	// todo: add your logic here and delete this line
 	list, err := l.svcCtx.ExCategoryModel.FindList(l.ctx)
-	logx.Infov(list)
 	res := &movies.GetNavigationResponse{
 		Code:    200,
 		Message: "成功",

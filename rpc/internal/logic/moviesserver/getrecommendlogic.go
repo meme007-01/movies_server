@@ -2,11 +2,10 @@ package moviesserverlogic
 
 import (
 	"context"
-
-	"movies_server/rpc/internal/svc"
-	"movies_server/rpc/movies"
+	"movies_server/common/movies"
 
 	"github.com/zeromicro/go-zero/core/logx"
+	"movies_server/rpc/internal/svc"
 )
 
 type GetRecommendLogic struct {
@@ -24,7 +23,6 @@ func NewGetRecommendLogic(ctx context.Context, svcCtx *svc.ServiceContext) *GetR
 }
 
 func (l *GetRecommendLogic) GetRecommend(in *movies.GetRecommendRequest) (*movies.GetRecommendResponse, error) {
-	// todo: add your logic here and delete this line
 	data, err := l.svcCtx.ExVideosModel.FindRecommendList(l.ctx)
 	resp := &movies.GetRecommendResponse{
 		Code:    200,
@@ -34,7 +32,7 @@ func (l *GetRecommendLogic) GetRecommend(in *movies.GetRecommendRequest) (*movie
 		resp.Code = -1
 		resp.Message = err.Error()
 	} else {
-		recommList := make([]*movies.MovieModel, 0)
+		r := make([]*movies.MovieModel, 0)
 		for _, m := range data {
 			movie := &movies.MovieModel{
 				Id:                    m.Id,
@@ -92,10 +90,12 @@ func (l *GetRecommendLogic) GetRecommend(in *movies.GetRecommendRequest) (*movie
 				CategoryChildIdStatus: m.CategoryChildIdStatus,
 				PlayUrl:               m.PlayUrl.String,
 				PlayUrlPutIn:          m.PlayUrlPutIn,
+				TypeSort:              m.TypeSort,
+				TypeName:              m.TypeName.String,
 			}
-			recommList = append(recommList, movie)
+			r = append(r, movie)
 		}
-		resp.Data = recommList
+		resp.Data = r
 	}
 	return resp, nil
 }
