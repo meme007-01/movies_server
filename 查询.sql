@@ -8,7 +8,7 @@ select c.name,c.sort, v.id,v.title,category_pid,category_child_id,surface_plot,r
 imdb_score,imdb_score_id,douban_score,douban_score_id,introduce,popularity_day,popularity_week,popularity_month,popularity_sum,v.note,year,album_id,v.status,v.create_at,
 v.update_at,duration,region,v.language,label,v.number,v.total,horizontal_poster,vertical_poster,publish,serial_number,screenshot,gif,
 alias,release_at,shelf_at,end,unit,watch,collection_id,use_local_image,titles_time,trailer_time,v.site_id,category_pid_status,category_child_id_status,play_url,play_url_put_in
-from cms.videos as v Left join cms.category as c on v.category_pid=c.id where v.recommend = 1;
+from cms.videos as v Left join cms.category as c on v.category_pid=c.id where v.recommend = 1 and c.status=1;
 
 
 -- 获取每个大分类下的 banner 图片,推荐的不包含在内

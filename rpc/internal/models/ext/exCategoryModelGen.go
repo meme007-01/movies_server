@@ -4,8 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 	"movies_server/rpc/internal/models"
 	"strings"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
 	"github.com/zeromicro/go-zero/core/stores/cache"
@@ -116,14 +118,21 @@ func (m *defaultCategoryModel) tableName() string {
 	return m.table
 }
 
+// FindList 查询所有的大分类
 func (m *defaultCategoryModel) FindList(ctx context.Context) ([]Category, error) {
-	query := fmt.Sprintf("select * from %s where status=1", m.table)
+	query := fmt.Sprintf("select * from %s where parent_id=0 and status=1 and type=1;", m.table)
 	var resp []Category
-	err := m.QueryRowsNoCacheCtx(ctx, &resp, query)
-	//err := m.QueryRowCtx(ctx, &resp, cmsCategoryIdKey, func(ctx context.Context, conn sqlx.SqlConn, v any) error {
-	//	query := fmt.Sprintf("select %s from %s where `id` = ? limit 1", categoryRows, m.table)
-	//	return conn.QueryRowCtx(ctx, v, query, id)
-	//})
+	allCmsCategoryIdKey := "cache:cms:videos:category"
+	err := m.GetCacheCtx(ctx, allCmsCategoryIdKey, &resp)
+	if err != nil || resp == nil {
+		err = m.QueryRowsNoCacheCtx(ctx, &resp, query)
+		if err == nil && resp != nil {
+			err1 := m.SetCacheWithExpireCtx(ctx, allCmsCategoryIdKey, resp, time.Hour*12)
+			if err1 != nil {
+				logx.Error("设置缓存失败了:", err1)
+			}
+		}
+	}
 	switch err {
 	case nil:
 		return resp, nil

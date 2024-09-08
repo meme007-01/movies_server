@@ -7,6 +7,7 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 	"movies_server/rpc/internal/models"
 	"strings"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
 	"github.com/zeromicro/go-zero/core/stores/cache"
@@ -208,9 +209,17 @@ v.update_at,duration,region,v.language,label,v.number,v.total,horizontal_poster,
 alias,release_at,shelf_at,end,unit,watch,collection_id,use_local_image,titles_time,trailer_time,v.site_id,category_pid_status,category_child_id_status,play_url,play_url_put_in
 from cms.videos as v Left join cms.category as c on v.category_pid=c.id where v.recommend = 1 and c.status=1;`
 	var resp []*Videos
-	//allCmsVideosIdKey := "all"
-	err = m.QueryRowsNoCacheCtx(ctx, &resp, query)
-	logx.Error(err)
+	allCmsVideosIdKey := "cache:cms:videos:recommend"
+	err = m.GetCacheCtx(ctx, allCmsVideosIdKey, &resp)
+	if err != nil || resp == nil {
+		err = m.QueryRowsNoCacheCtx(ctx, &resp, query)
+		if err == nil {
+			err1 := m.SetCacheWithExpireCtx(ctx, allCmsVideosIdKey, resp, time.Hour*12)
+			if err1 != nil {
+				logx.Error("设置缓存失败了:", err1)
+			}
+		}
+	}
 	switch err {
 	case nil:
 		return resp, err
