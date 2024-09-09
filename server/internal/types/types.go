@@ -12,6 +12,16 @@ type GetNavigationResponse struct {
 	Data    []NavigationModel `json:"data" dc:"数据"`
 }
 
+type GetPlayLineRequest struct {
+	VideoId int64 `json:"videoId" dc:"视频ID"`
+}
+
+type GetPlayLineResponse struct {
+	Code    int64            `json:"code" dc:"code 码"`
+	Message string           `json:"message" dc:"消息"`
+	Data    []*PlayLineModel `json:"data" dc:"数据"`
+}
+
 type GetRecommendRequest struct {
 }
 
@@ -86,6 +96,24 @@ type NavigationModel struct {
 	Title      string            `json:"title" dc:"标题"`
 	Sort       int64             `json:"sort" dc:"排序"`
 	SubNavList []NavigationModel `json:"subNavList" dc:"子菜单"`
+}
+
+type PlayLineModel struct {
+	Id           int64  `json:"id" dc:"ID"`
+	VideoLineId  int64  `json:"videoLineId" dc:"视频线路ID"`
+	VideoId      int64  `json:"videoId" dc:"视频ID"`
+	Name         string `json:"name" dc:"线路集数名称"`
+	Sort         int64  `json:"sort" dc:"排序"`
+	File         string `json:"file" dc:"播放地址"`
+	ChargingMode int64  `json:"chargingMode" dc:"收费模式 1免费 2vip免费 3金币点播"`
+	Currency     int64  `json:"currency" dc:"金币数量"`
+	SubTitle     string `json:"subTitle" dc:"副标题"`
+	Status       int64  `json:"status" dc:"状态"`
+	CreateAt     int64  `json:"createAt" dc:"创建时间"`
+	UpdateAt     int64  `json:"updateAt" dc:"更新时间"`
+	SiteId       int64  `json:"siteId" dc:"站点id"`
+	Tag          string `json:"tag" dc:"标识 kcm3u8"`
+	LiveSource   int64  `json:"liveSource" dc:"是否是直播源1-是 0-否"`
 }
 
 type RecommendList struct {

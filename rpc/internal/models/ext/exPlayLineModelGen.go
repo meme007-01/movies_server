@@ -8,8 +8,10 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"github.com/zeromicro/go-zero/core/logx"
 	"movies_server/rpc/internal/models"
 	"strings"
+	"time"
 
 	"github.com/zeromicro/go-zero/core/stores/builder"
 	"github.com/zeromicro/go-zero/core/stores/cache"
@@ -33,6 +35,8 @@ type (
 		FindOne(ctx context.Context, id int64) (*PlayLine, error)
 		Update(ctx context.Context, data *PlayLine) error
 		Delete(ctx context.Context, id int64) error
+
+		FindList(ctx context.Context, videoId int64) ([]*PlayLine, error)
 	}
 
 	defaultPlayLineModel struct {
@@ -123,6 +127,28 @@ func (m *defaultPlayLineModel) tableName() string {
 	return m.table
 }
 
-
-
+//FindList
+func (m *defaultPlayLineModel) FindList(ctx context.Context, videoId int64) ([]*PlayLine, error){
+	query := `SELECT * FROM cms.play_line where video_id=?;`
+	var resp []*PlayLine
+	allCmsVideosIdKey := "cache:cms:videos:id:"+string(videoId)
+	err := m.GetCacheCtx(ctx, allCmsVideosIdKey, &resp)
+	if err != nil || resp == nil {
+		err = m.QueryRowsNoCacheCtx(ctx, &resp, query,videoId)
+		if err == nil {
+			err1 := m.SetCacheWithExpireCtx(ctx, allCmsVideosIdKey, resp, time.Hour*12)
+			if err1 != nil {
+				logx.Error("设置缓存失败了:", err1)
+			}
+		}
+	}
+	switch err {
+	case nil:
+		return resp, err
+	case sqlc.ErrNotFound:
+		return nil, models.ErrNotFound
+	default:
+		return nil, err
+	}
+}
 

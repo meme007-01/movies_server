@@ -32,3 +32,8 @@ func (s *MoviesServerServer) GetRecommend(ctx context.Context, in *movies.GetRec
 	l := moviesserverlogic.NewGetRecommendLogic(ctx, s.svcCtx)
 	return l.GetRecommend(in)
 }
+
+func (s *MoviesServerServer) GetPlayLine(ctx context.Context, in *movies.GetPlayLineRequest) (*movies.GetPlayLineResponse, error) {
+	l := moviesserverlogic.NewGetPlayLineLogic(ctx, s.svcCtx)
+	return l.GetPlayLine(in)
+}

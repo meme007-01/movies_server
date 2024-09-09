@@ -21,6 +21,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Handler: home.GetNavigationServerHandler(serverCtx),
 			},
 			{
+				Method:  http.MethodPost,
+				Path:    "/getPlayLine",
+				Handler: home.GetPlayLineServerHandler(serverCtx),
+			},
+			{
 				Method:  http.MethodGet,
 				Path:    "/getRecommend",
 				Handler: home.GetRecommendServerHandler(serverCtx),

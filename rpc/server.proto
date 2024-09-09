@@ -100,8 +100,40 @@ message GetRecommendResponse
     repeated MovieModel data    = 3; //"数据"`
 }
 
+message PlayLineModel
+{
+    int64  id           = 1;  //                    `db:"id"`
+    int64  videoLineId  = 2;  //  sql.NullInt64  `db:"video_line_id"` // 资源id
+    int64  videoId      = 3;  //      sql.NullInt64  `db:"video_id"`
+    string name         = 4;  //        string         `db:"name"`          // 名称
+    int64  sort         = 5;  //        int64          `db:"sort"`          // 序号
+    string file         = 6;  //       sql.NullString `db:"file"`          // 文件地址
+    int64  chargingMode = 7;  //  int64          `db:"charging_mode"` // 收费模式 1免费 2vip免费 3金币点播
+    int64  currency     = 8;  //    int64          `db:"currency"`      // 金币数量
+    string  subTitle     = 9;  //    string         `db:"sub_title"`     // 副标题
+    int64  status       = 10; //    int64          `db:"status"`
+    int64  createAt     = 11; //   int64          `db:"create_at"`
+    int64  updateAt     = 12; //    int64          `db:"update_at"`
+    int64  siteId       = 13; //    int64          `db:"site_id"`     // 站点id
+    string  tag          = 14; //   string         `db:"tag"`         // 标识
+    int64  liveSource   = 15; //  int64          `db:"live_source"` // 是否是直播源1-是 0-否
+}
+
+// 获取播放地址相关信息
+message GetPlayLineRequest
+{
+    int64 videoId = 1; //视频ID
+}
+message GetPlayLineResponse
+{
+    int64                  code    = 1;
+    string                 message = 2; //"消息"`
+    repeated PlayLineModel data    = 3; //"数据"`
+}
+
 service MoviesServer
 {
     rpc GetNavigation(GetNavigationRequest) returns (GetNavigationResponse);
     rpc GetRecommend(GetRecommendRequest) returns (GetRecommendResponse);
+    rpc GetPlayLine(GetPlayLineRequest) returns (GetPlayLineResponse);
 }

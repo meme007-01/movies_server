@@ -94,6 +94,36 @@ type GetRecommendResponse {
 	Data    []*RecommendList `json:"data" dc:"数据"`
 }
 
+//获取播放地址相关信息
+type PlayLineModel {
+	Id           int64  `json:"id" dc:"ID"`
+	VideoLineId  int64  `json:"videoLineId" dc:"视频线路ID"`
+	VideoId      int64  `json:"videoId" dc:"视频ID"`
+	Name         string `json:"name" dc:"线路集数名称"`
+	Sort         int64  `json:"sort" dc:"排序"`
+	File         string `json:"file" dc:"播放地址"`
+	ChargingMode int64  `json:"chargingMode" dc:"收费模式 1免费 2vip免费 3金币点播"`
+	Currency     int64  `json:"currency" dc:"金币数量"`
+	SubTitle     string `json:"subTitle" dc:"副标题"`
+	Status       int64  `json:"status" dc:"状态"`
+	CreateAt     int64  `json:"createAt" dc:"创建时间"`
+	UpdateAt     int64  `json:"updateAt" dc:"更新时间"`
+	SiteId       int64  `json:"siteId" dc:"站点id"`
+	Tag          string `json:"tag" dc:"标识 kcm3u8"`
+	LiveSource   int64  `json:"liveSource" dc:"是否是直播源1-是 0-否"`
+}
+
+// 获取推荐页面信息
+type GetPlayLineRequest {
+	VideoId int64 `json:"videoId" dc:"视频ID"`
+}
+
+type GetPlayLineResponse {
+	Code    int64            `json:"code" dc:"code 码"`
+	Message string           `json:"message" dc:"消息"`
+	Data    []*PlayLineModel `json:"data" dc:"数据"`
+}
+
 @server (
 	prefix: /v1 // 对当前 Foo 语法块下的所有路由，新增 /v1 路由前缀，不需要则请删除此行
 	group:  home // 对当前 Foo 语法块下的所有路由，路由归并到 g1 目录下，不需要则请删除此行
@@ -106,5 +136,8 @@ service server-api {
 
 	@handler GetRecommendServerHandler
 	get /getRecommend (GetRecommendRequest) returns (GetRecommendResponse)
+
+	@handler GetPlayLineServerHandler
+	post /getPlayLine (GetPlayLineRequest) returns (GetPlayLineResponse)
 }
 
