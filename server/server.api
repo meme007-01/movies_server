@@ -124,6 +124,22 @@ type GetPlayLineResponse {
 	Data    []*PlayLineModel `json:"data" dc:"数据"`
 }
 
+// 获取分类视频列表分页信息
+type GetVideoRequest {
+	PageIndex       int64 `json:"pageIndex" dc:"第几页"`
+	PageSize        int64 `json:"pageSize" dc:"每页数量"`
+	CategoryPid     int64 `json:"categoryPid" dc:"一级分类"`
+	CategoryChildId int64 `json:"categoryChildId" dc:"二级分类"`
+}
+
+type GetVideoResponse {
+	Code       int64         `json:"code" dc:"code 码"`
+	Message    string        `json:"message" dc:"消息"`
+	Data       []*MovieModel `json:"data" dc:"数据"`
+	BannerList []*MovieModel `json:"bannerList" dc:"banner数据,只有第一页会有数据"`
+	Total      int64         `json:"total" dc:"总条数"`
+}
+
 @server (
 	prefix: /v1 // 对当前 Foo 语法块下的所有路由，新增 /v1 路由前缀，不需要则请删除此行
 	group:  home // 对当前 Foo 语法块下的所有路由，路由归并到 g1 目录下，不需要则请删除此行
@@ -139,5 +155,8 @@ service server-api {
 
 	@handler GetPlayLineServerHandler
 	post /getPlayLine (GetPlayLineRequest) returns (GetPlayLineResponse)
+
+	@handler GetVideoServerHandler
+	post /getVideos (GetVideoRequest) returns (GetVideoResponse)
 }
 

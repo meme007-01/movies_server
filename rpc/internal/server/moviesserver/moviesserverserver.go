@@ -37,3 +37,8 @@ func (s *MoviesServerServer) GetPlayLine(ctx context.Context, in *movies.GetPlay
 	l := moviesserverlogic.NewGetPlayLineLogic(ctx, s.svcCtx)
 	return l.GetPlayLine(in)
 }
+
+func (s *MoviesServerServer) GetVideoList(ctx context.Context, in *movies.GetVideoRequest) (*movies.GetVideoResponse, error) {
+	l := moviesserverlogic.NewGetVideoListLogic(ctx, s.svcCtx)
+	return l.GetVideoList(in)
+}

@@ -131,9 +131,29 @@ message GetPlayLineResponse
     repeated PlayLineModel data    = 3; //"数据"`
 }
 
+
+// 获取分类视频分页列表信息
+message GetVideoRequest
+{
+    int64 pageIndex=1;
+    int64 pageSize=2;
+    int64 categoryPid=3;//大分类id
+    int64 categoryChildId=4;//子分类id
+//    ...
+}
+message GetVideoResponse
+{
+    int64               code    = 1;
+    string              message = 2; //"消息"`
+    repeated MovieModel data    = 3; //"视频数据"`
+    repeated MovieModel bannerList=4;//banner 数据,只有第一页才会有数据
+    int64 total=5;//总条数
+}
+
 service MoviesServer
 {
     rpc GetNavigation(GetNavigationRequest) returns (GetNavigationResponse);
     rpc GetRecommend(GetRecommendRequest) returns (GetRecommendResponse);
     rpc GetPlayLine(GetPlayLineRequest) returns (GetPlayLineResponse);
+    rpc GetVideoList(GetVideoRequest) returns (GetVideoResponse);
 }

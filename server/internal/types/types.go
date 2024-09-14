@@ -31,6 +31,21 @@ type GetRecommendResponse struct {
 	Data    []*RecommendList `json:"data" dc:"数据"`
 }
 
+type GetVideoRequest struct {
+	PageIndex       int64 `json:"pageIndex" dc:"第几页"`
+	PageSize        int64 `json:"pageSize" dc:"每页数量"`
+	CategoryPid     int64 `json:"categoryPid" dc:"一级分类"`
+	CategoryChildId int64 `json:"categoryChildId" dc:"二级分类"`
+}
+
+type GetVideoResponse struct {
+	Code       int64         `json:"code" dc:"code 码"`
+	Message    string        `json:"message" dc:"消息"`
+	Data       []*MovieModel `json:"data" dc:"数据"`
+	BannerList []*MovieModel `json:"bannerList" dc:"banner数据,只有第一页会有数据"`
+	Total      int64         `json:"total" dc:"总条数"`
+}
+
 type MovieModel struct {
 	Id                    int64  `json:"id"`
 	Title                 string `json:"title"`           // 影片标题

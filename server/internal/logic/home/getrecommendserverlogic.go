@@ -111,10 +111,6 @@ func (l *GetRecommendServerLogic) GetRecommendServer(req *types.GetRecommendRequ
 				bannerRecommend.BannerList = append(bannerRecommend.BannerList, movieModel)
 			} else {
 				typeId := m.GetCategoryPid()
-				//_, strOk := typeMap[typeId]
-				//if !strOk {
-				//	continue
-				//}
 				_, ok := dataMap[typeId]
 				if !ok {
 					dataMap[typeId] = &types.RecommendList{

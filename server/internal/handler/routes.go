@@ -30,6 +30,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/getRecommend",
 				Handler: home.GetRecommendServerHandler(serverCtx),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/getVideos",
+				Handler: home.GetVideoServerHandler(serverCtx),
+			},
 		},
 		rest.WithPrefix("/v1"),
 	)

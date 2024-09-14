@@ -19,6 +19,8 @@ type (
 	GetPlayLineResponse   = movies.GetPlayLineResponse
 	GetRecommendRequest   = movies.GetRecommendRequest
 	GetRecommendResponse  = movies.GetRecommendResponse
+	GetVideoRequest       = movies.GetVideoRequest
+	GetVideoResponse      = movies.GetVideoResponse
 	MovieModel            = movies.MovieModel
 	NavigationModel       = movies.NavigationModel
 	PlayLineModel         = movies.PlayLineModel
@@ -28,6 +30,7 @@ type (
 		GetNavigation(ctx context.Context, in *GetNavigationRequest, opts ...grpc.CallOption) (*GetNavigationResponse, error)
 		GetRecommend(ctx context.Context, in *GetRecommendRequest, opts ...grpc.CallOption) (*GetRecommendResponse, error)
 		GetPlayLine(ctx context.Context, in *GetPlayLineRequest, opts ...grpc.CallOption) (*GetPlayLineResponse, error)
+		GetVideoList(ctx context.Context, in *GetVideoRequest, opts ...grpc.CallOption) (*GetVideoResponse, error)
 	}
 
 	defaultMoviesServer struct {
@@ -54,4 +57,9 @@ func (m *defaultMoviesServer) GetRecommend(ctx context.Context, in *GetRecommend
 func (m *defaultMoviesServer) GetPlayLine(ctx context.Context, in *GetPlayLineRequest, opts ...grpc.CallOption) (*GetPlayLineResponse, error) {
 	client := movies.NewMoviesServerClient(m.cli.Conn())
 	return client.GetPlayLine(ctx, in, opts...)
+}
+
+func (m *defaultMoviesServer) GetVideoList(ctx context.Context, in *GetVideoRequest, opts ...grpc.CallOption) (*GetVideoResponse, error) {
+	client := movies.NewMoviesServerClient(m.cli.Conn())
+	return client.GetVideoList(ctx, in, opts...)
 }
