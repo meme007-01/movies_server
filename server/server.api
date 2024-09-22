@@ -140,6 +140,18 @@ type GetVideoResponse {
 	Total      int64         `json:"total" dc:"总条数"`
 }
 
+// 获取分类视频列表分页信息
+type GetVideoHotRequest {
+	CategoryPid int64 `json:"categoryPid" dc:"一级分类"`
+	TabType     int64 `json:"tabType" dc:"热播类型 0:天热播  1:周热播  2:月热播  3:年热播"`
+}
+
+type GetVideoHotResponse {
+	Code    int64         `json:"code" dc:"code 码"`
+	Message string        `json:"message" dc:"消息"`
+	Data    []*MovieModel `json:"data" dc:"数据"`
+}
+
 @server (
 	prefix: /v1 // 对当前 Foo 语法块下的所有路由，新增 /v1 路由前缀，不需要则请删除此行
 	group:  home // 对当前 Foo 语法块下的所有路由，路由归并到 g1 目录下，不需要则请删除此行
@@ -158,5 +170,8 @@ service server-api {
 
 	@handler GetVideoServerHandler
 	post /getVideos (GetVideoRequest) returns (GetVideoResponse)
+
+	@handler GetVideoHotServerHandler
+	post /getHotVideos (GetVideoHotRequest) returns (GetVideoHotResponse)
 }
 

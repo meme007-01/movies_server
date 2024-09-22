@@ -19,10 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	MoviesServer_GetNavigation_FullMethodName = "/server.MoviesServer/GetNavigation"
-	MoviesServer_GetRecommend_FullMethodName  = "/server.MoviesServer/GetRecommend"
-	MoviesServer_GetPlayLine_FullMethodName   = "/server.MoviesServer/GetPlayLine"
-	MoviesServer_GetVideoList_FullMethodName  = "/server.MoviesServer/GetVideoList"
+	MoviesServer_GetNavigation_FullMethodName   = "/server.MoviesServer/GetNavigation"
+	MoviesServer_GetRecommend_FullMethodName    = "/server.MoviesServer/GetRecommend"
+	MoviesServer_GetPlayLine_FullMethodName     = "/server.MoviesServer/GetPlayLine"
+	MoviesServer_GetVideoList_FullMethodName    = "/server.MoviesServer/GetVideoList"
+	MoviesServer_GetVideoHotList_FullMethodName = "/server.MoviesServer/GetVideoHotList"
 )
 
 // MoviesServerClient is the client API for MoviesServer service.
@@ -33,6 +34,7 @@ type MoviesServerClient interface {
 	GetRecommend(ctx context.Context, in *GetRecommendRequest, opts ...grpc.CallOption) (*GetRecommendResponse, error)
 	GetPlayLine(ctx context.Context, in *GetPlayLineRequest, opts ...grpc.CallOption) (*GetPlayLineResponse, error)
 	GetVideoList(ctx context.Context, in *GetVideoRequest, opts ...grpc.CallOption) (*GetVideoResponse, error)
+	GetVideoHotList(ctx context.Context, in *GetVideoHotRequest, opts ...grpc.CallOption) (*GetVideoHotResponse, error)
 }
 
 type moviesServerClient struct {
@@ -83,6 +85,16 @@ func (c *moviesServerClient) GetVideoList(ctx context.Context, in *GetVideoReque
 	return out, nil
 }
 
+func (c *moviesServerClient) GetVideoHotList(ctx context.Context, in *GetVideoHotRequest, opts ...grpc.CallOption) (*GetVideoHotResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetVideoHotResponse)
+	err := c.cc.Invoke(ctx, MoviesServer_GetVideoHotList_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MoviesServerServer is the server API for MoviesServer service.
 // All implementations must embed UnimplementedMoviesServerServer
 // for forward compatibility
@@ -91,6 +103,7 @@ type MoviesServerServer interface {
 	GetRecommend(context.Context, *GetRecommendRequest) (*GetRecommendResponse, error)
 	GetPlayLine(context.Context, *GetPlayLineRequest) (*GetPlayLineResponse, error)
 	GetVideoList(context.Context, *GetVideoRequest) (*GetVideoResponse, error)
+	GetVideoHotList(context.Context, *GetVideoHotRequest) (*GetVideoHotResponse, error)
 	mustEmbedUnimplementedMoviesServerServer()
 }
 
@@ -109,6 +122,9 @@ func (UnimplementedMoviesServerServer) GetPlayLine(context.Context, *GetPlayLine
 }
 func (UnimplementedMoviesServerServer) GetVideoList(context.Context, *GetVideoRequest) (*GetVideoResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetVideoList not implemented")
+}
+func (UnimplementedMoviesServerServer) GetVideoHotList(context.Context, *GetVideoHotRequest) (*GetVideoHotResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetVideoHotList not implemented")
 }
 func (UnimplementedMoviesServerServer) mustEmbedUnimplementedMoviesServerServer() {}
 
@@ -195,6 +211,24 @@ func _MoviesServer_GetVideoList_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _MoviesServer_GetVideoHotList_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetVideoHotRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MoviesServerServer).GetVideoHotList(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: MoviesServer_GetVideoHotList_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MoviesServerServer).GetVideoHotList(ctx, req.(*GetVideoHotRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // MoviesServer_ServiceDesc is the grpc.ServiceDesc for MoviesServer service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -217,6 +251,10 @@ var MoviesServer_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetVideoList",
 			Handler:    _MoviesServer_GetVideoList_Handler,
+		},
+		{
+			MethodName: "GetVideoHotList",
+			Handler:    _MoviesServer_GetVideoHotList_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -39,6 +39,9 @@ type (
 		FindVideoList(ctx context.Context, pageIndex, pageSize, categoryPid, categoryChildId int64) (data []*Videos, err error)
 
 		FindVideoTotal(ctx context.Context, categoryPid, categoryChildId int64) (count int64, err error)
+
+		//FindVideoListByHot 查询类型对应分类的热播视频
+		FindVideoListByHot(ctx context.Context, categoryPid, tabType int64) (data []*Videos, err error)
 	}
 
 	defaultVideosModel struct {
@@ -348,5 +351,55 @@ func (m *defaultVideosModel) FindVideoTotal(ctx context.Context, categoryPid, ca
 		return 0, models.ErrNotFound
 	default:
 		return 0, err
+	}
+}
+
+// FindVideoListByHot 查询类型对应分类的热播视频
+func (m *defaultVideosModel) FindVideoListByHot(ctx context.Context, categoryPid, tabType int64) (data []*Videos, err error) {
+	query := `select c.name as type_ame,c.sort as type_sort, v.id,v.title,category_pid,category_child_id,surface_plot,recommend,cycle,cycle_img,charging_mode,buy_mode,gold,directors,actors,
+imdb_score,imdb_score_id,douban_score,douban_score_id,introduce,popularity_day,popularity_week,popularity_month,popularity_sum,v.note,year,album_id,v.status,v.create_at,
+v.update_at,duration,region,v.language,label,v.number,v.total,horizontal_poster,vertical_poster,publish,serial_number,screenshot,gif,
+alias,release_at,shelf_at,end,unit,watch,collection_id,use_local_image,titles_time,trailer_time,v.site_id,category_pid_status,category_child_id_status,play_url,play_url_put_in
+from cms.videos as v Left join cms.category as c on v.category_pid=c.id 
+                          where c.status=1 and category_pid=? `
+	args := make([]any, 0)
+	allCmsVideosIdKey := "cache:cms:videos:hot"
+	allCmsVideosIdKey = fmt.Sprintf("%s:%v", allCmsVideosIdKey, categoryPid)
+	allCmsVideosIdKey = fmt.Sprintf("%s:%v", allCmsVideosIdKey, tabType)
+	//query += ` and category_pid=?`
+	//args = append(args, categoryPid)
+
+	if tabType == 0 { //天热播
+		query += ` order by v.year desc,v.popularity_day desc`
+	} else if tabType == 1 { //周热播
+		query += ` order by v.year desc,v.popularity_week desc`
+	} else if tabType == 2 { //月热播
+		query += ` order by v.year desc,v.popularity_month desc`
+	} else { //年热播
+		query += ` order by v.year desc,v.popularity_sum desc`
+	}
+	args = append(args, categoryPid)
+	query += ` limit ?,?`
+	args = append(args, 0, 50)
+
+	logx.Infov(query)
+	var resp []*Videos
+	err = m.GetCacheCtx(ctx, allCmsVideosIdKey, &resp)
+	if err != nil || resp == nil {
+		err = m.QueryRowsNoCacheCtx(ctx, &resp, query, args...)
+		if err == nil {
+			err1 := m.SetCacheWithExpireCtx(ctx, allCmsVideosIdKey, resp, time.Minute*10)
+			if err1 != nil {
+				logx.Error("设置缓存失败了:", err1)
+			}
+		}
+	}
+	switch err {
+	case nil:
+		return resp, err
+	case sqlc.ErrNotFound:
+		return nil, models.ErrNotFound
+	default:
+		return nil, err
 	}
 }

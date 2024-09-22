@@ -150,10 +150,24 @@ message GetVideoResponse
     int64 total=5;//总条数
 }
 
+// 获取分类视频分页列表信息
+message GetVideoHotRequest
+{
+    int64 categoryPid=1;//大分类id
+    int64 tabType=2;//0:天热播  1:周热播  2:月热播  3:年热播
+}
+message GetVideoHotResponse
+{
+    int64               code    = 1;
+    string              message = 2; //"消息"`
+    repeated MovieModel data    = 3; //"视频数据"`
+}
+
 service MoviesServer
 {
     rpc GetNavigation(GetNavigationRequest) returns (GetNavigationResponse);
     rpc GetRecommend(GetRecommendRequest) returns (GetRecommendResponse);
     rpc GetPlayLine(GetPlayLineRequest) returns (GetPlayLineResponse);
     rpc GetVideoList(GetVideoRequest) returns (GetVideoResponse);
+    rpc GetVideoHotList(GetVideoHotRequest) returns (GetVideoHotResponse);
 }

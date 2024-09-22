@@ -31,6 +31,17 @@ type GetRecommendResponse struct {
 	Data    []*RecommendList `json:"data" dc:"数据"`
 }
 
+type GetVideoHotRequest struct {
+	CategoryPid int64 `json:"categoryPid" dc:"一级分类"`
+	TabType     int64 `json:"tabType" dc:"热播类型 0:天热播  1:周热播  2:月热播  3:年热播"`
+}
+
+type GetVideoHotResponse struct {
+	Code    int64         `json:"code" dc:"code 码"`
+	Message string        `json:"message" dc:"消息"`
+	Data    []*MovieModel `json:"data" dc:"数据"`
+}
+
 type GetVideoRequest struct {
 	PageIndex       int64 `json:"pageIndex" dc:"第几页"`
 	PageSize        int64 `json:"pageSize" dc:"每页数量"`

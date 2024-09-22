@@ -42,3 +42,8 @@ func (s *MoviesServerServer) GetVideoList(ctx context.Context, in *movies.GetVid
 	l := moviesserverlogic.NewGetVideoListLogic(ctx, s.svcCtx)
 	return l.GetVideoList(in)
 }
+
+func (s *MoviesServerServer) GetVideoHotList(ctx context.Context, in *movies.GetVideoHotRequest) (*movies.GetVideoHotResponse, error) {
+	l := moviesserverlogic.NewGetVideoHotListLogic(ctx, s.svcCtx)
+	return l.GetVideoHotList(in)
+}
